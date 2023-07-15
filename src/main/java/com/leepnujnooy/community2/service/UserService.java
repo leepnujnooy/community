@@ -1,66 +1,24 @@
 package com.leepnujnooy.community2.service;
 
+
+import com.leepnujnooy.community2.entity.CustomUserDetails;
 import com.leepnujnooy.community2.entity.UserEntity;
 import com.leepnujnooy.community2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
-public class UserService implements UserDetailsManager {
+@Slf4j
+public class UserService {
 
     private final UserRepository userRepository;
-    @Override
-    public boolean userExists(String username) {
-        return userRepository.existsByUsername(username);
+
+    public void createUser(UserDetails userDetails){
+        userRepository.save(CustomUserDetails.convertUserDetailToUserEntity((CustomUserDetails) userDetails));
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> optional = userRepository.findByUsername(username);
-        if(optional.isEmpty()){
-            throw new UsernameNotFoundException(username);
-        }
-        return optional.get();
-    }
-
-    @Override
-    public void createUser(UserDetails user) {
-        if(userExists(user.getUsername())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-        else{
-            userRepository.save(UserEntity
-                    .builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .build());
-        }
-    }
-
-    @Override
-    public void updateUser(UserDetails user) {
-
-    }
-
-    @Override
-    public void deleteUser(String username) {
-
-    }
-
-    @Override
-    public void changePassword(String oldPassword, String newPassword) {
-
-    }
-
 
 }
