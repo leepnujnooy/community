@@ -1,7 +1,6 @@
 package com.leepnujnooy.community2.controller;
 
 import com.leepnujnooy.community2.entity.CustomUserDetails;
-import com.leepnujnooy.community2.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserUIController {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
     @GetMapping("/login")
